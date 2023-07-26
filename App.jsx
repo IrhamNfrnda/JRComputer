@@ -20,6 +20,7 @@ import ServiceScreen from './src/views/main/ServiceScreen';
 import ProfileScreen from './src/views/profile/ProfileScreen'
 import UpdateProfileScreen from './src/views/profile/UpdateProfileScreen'
 import AboutScreen from './src/views/main/AboutScreen';
+import CategoryScreen from './src/views/main/CategoryScreen'
 
 import {enableLatestRenderer} from 'react-native-maps';
 
@@ -123,6 +124,7 @@ const App = () => {
         <Stack.Screen name="Payment" component={PaymentScreen} />
         <Stack.Screen name="EditProfile" component={UpdateProfileScreen} />
         <Stack.Screen name="OrderService" component={OrderServiceScreen} />
+        <Stack.Screen name="Category" component={CategoryScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -8,6 +8,7 @@ import { useFocusEffect } from '@react-navigation/native';
 const MyOrderScreen = ({ navigation }) => {
   const [orders, setOrders] = useState([]);
   const [userProfile, setUserProfile] = useState({});
+  const [services, setServices] = useState([]);
   const [loading, setLoading] = useState(true); // Add loading state
 
   useEffect(() => {
@@ -42,6 +43,19 @@ const MyOrderScreen = ({ navigation }) => {
       }
     };
 
+    const fetchServices = async () => {
+      try {
+        // Make API request to fetch service data from Strapi
+        const response = await axios.get('https://strapi-production-3591.up.railway.app/api/services');
+
+        setServices(response.data.data);
+        setLoading(false); // Set loading to false after data is fetched
+      } catch (error) {
+        console.error('Error fetching services:', error.response.data);
+        setLoading(false); // Set loading to false in case of error
+      }
+    };
+
     fetchUserData();
     fetchOrders();
   }, [userProfile]); // Fetch orders whenever userProfile changes
@@ -51,6 +65,13 @@ const MyOrderScreen = ({ navigation }) => {
       <Text style={styles.orderName}>{item.attributes.product.data.attributes.name}</Text>
       <Text style={styles.orderPrice}>Harga: Rp{item.attributes.price}</Text>
       <Text style={styles.orderStatus}>Status: {item.attributes.status}</Text>
+    </Card>
+  );
+
+  const renderServiceCard = ({ item }) => (
+    <Card style={styles.serviceCard}>
+      <Text style={styles.serviceName}>{item.attributes.title}</Text>
+      <Text style={styles.orderPrice}>Harga: Rp{item.attributes.price}</Text>
     </Card>
   );
 

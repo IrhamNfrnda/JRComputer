@@ -3,16 +3,16 @@ import axios from 'axios';
 class ProductModel {
   constructor(data) {
     this.id = data.id;
-    this.name = data.attributes.name;
-    this.price = data.attributes.price;
-    this.stock = data.attributes.stock;
-    this.description = data.attributes.description;
-    this.condition = data.attributes.condition;
-    this.createdAt = data.attributes.createdAt;
-    this.updatedAt = data.attributes.updatedAt;
-    this.publishedAt = data.attributes.publishedAt;
-    this.category = data.attributes.category?.data?.attributes?.title || null;
-    this.image = data.attributes.photo?.data?.attributes?.url || null;
+    this.name = data?.attributes?.name;
+    this.price = data?.attributes?.price;
+    this.stock = data?.attributes?.stock;
+    this.description = data?.attributes?.description;
+    this.condition = data?.attributes?.condition;
+    this.createdAt = data?.attributes?.createdAt;
+    this.updatedAt = data?.attributes?.updatedAt;
+    this.publishedAt = data?.attributes?.publishedAt;
+    this.category = data?.attributes?.category?.data?.attributes?.title || null;
+    this.image = data?.attributes?.photo?.data?.attributes?.url || null;
   }
 }
 
@@ -38,6 +38,18 @@ class ProductService {
       throw error;
     }
   }
+
+  async getProductByCategory(category) {
+    try {
+      const response = await axios.get(`https://strapi-production-3591.up.railway.app/api/products?filters[category][title][$eq]=${category.name}&populate=*`);
+      const products = response.data.data.map((item) => new ProductModel(item));
+      return products;
+    } catch (error) {
+      console.error('Error fetching products by category:', error);
+      throw error;
+    }
+  }
+  
 }
 
 export { ProductModel, ProductService };

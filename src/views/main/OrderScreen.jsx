@@ -95,7 +95,7 @@ const OrderScreen = ({ navigation, route }) => {
                 {/* Product Name, Price, and Total */}
                 <View style={styles.productInfo}>
                     <Text style={styles.productName}>{product.name}</Text>
-                    <Text style={styles.productPrice}>{convertToIDRFormat(product.price)}</Text>ju
+                    <Text style={styles.productPrice}>{convertToIDRFormat(product.price)}</Text>
                     <Text style={styles.productTotal}>Jumlah: 1</Text>
                 </View>
             </View>

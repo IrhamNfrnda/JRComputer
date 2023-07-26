@@ -33,12 +33,12 @@ const ProductCard = observer(({ item, navigation }) => {
   return (
     <TouchableOpacity style={styles.productCard} onPress={handleProductPress}>
       <View style={styles.imageContainer}>
-        <Image source={{  uri: `${item.image}` }} style={styles.productImage} />
+        <Image source={{  uri: `${item?.image}` }} style={styles.productImage} />
       </View>
       <View style={styles.detailsContainer}>
-        <Text style={styles.productName}>{item.name}</Text>
-        <Text style={styles.productCategory}>{item.category}</Text>
-        <Text style={styles.productPrice}>{convertToIDRFormat(item.price)}</Text>
+        <Text style={styles.productName}>{item?.name}</Text>
+        <Text style={styles.productCategory}>{item?.category}</Text>
+        <Text style={styles.productPrice}>{item?.price}</Text>
       </View>
     </TouchableOpacity>
   );

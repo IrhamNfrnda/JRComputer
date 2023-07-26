@@ -7,55 +7,45 @@ const OrderServiceScreen = ({ navigation, route }) => {
   const { deviceType, brand, model, issueDescription, attachment } = route.params;
   const [userProfile, setUserProfile] = useState({});
 
+  useEffect(() => {
+    const getUserData = async () => {
+      try {
+        const userDataString = await AsyncStorage.getItem('userData');
+        if (userDataString) {
+          const userData = JSON.parse(userDataString);
+          setUserProfile(userData);
+        }
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    };
+    getUserData();
+  }, []);
+
   const handleDone = () => {
     postDataToServiceCollection()
       .then(() => navigation.navigate('Home'))
       .catch((error) => console.error('Error placing order:', error));
   };
 
-  useEffect(() => {
-        const getUserData = async () => {
-          try {
-            const userDataString = await AsyncStorage.getItem('userData');
-            if (userDataString) {
-              const userData = JSON.parse(userDataString);
-              setUserProfile(userData);
-            }
-          } catch (error) {
-            console.error('Error fetching user data:', error);
-          }
-        };
-        getUserData();
-      }, []);
-
   const postDataToServiceCollection = async () => {
     try {
       const response = await axios.post('https://strapi-production-3591.up.railway.app/api/services', {
-        data: {
-          deviceType,
-          brand,
-          model,
-          issueDescription,
-          customerName: userProfile?.fullName,
-          customerEmail: userProfile?.email,
-          customerPhone: userProfile?.phoneNumber,
-          shippingAddress: userProfile?.address,
-          shippingType: 'Ambil di toko',
-          orderDate: new Date().toISOString(),
-        }
-      });
-
-      // Show success alert after successful login
-      SweetAlert.showAlertWithOptions({
-        title: 'Success',
-        subTitle: 'Service berhasil diorder!',
-        style: 'success',
-        cancellable: true,
+        data: {deviceType,
+        brand,
+        model,
+        issueDescription,
+        customerName: userProfile ? userProfile?.fullname : 'Nama Pelanggan', 
+        customerEmail: userProfile ? userProfile?.email : 'Email Pelanggan', 
+        customerPhone: userProfile ? userProfile?.phoneNumber : 'No Pelanggan',
+        shippingAddress: userProfile ? userProfile?.address : 'Alamat Pelanggan', 
+        shippingType: 'Ambil di toko', 
+        orderDate: new Date().toISOString(),}
       });
 
       console.log('Order placed successfully:', response.data);
     } catch (error) {
-      console.error('Error placing order:', error.response.data);
+      console.error('Error placing order:', error);
       throw error;
     }
   };

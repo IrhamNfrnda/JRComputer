@@ -21,6 +21,18 @@ class ProductViewModel {
       this.isLoading = false;
     }
   }
+
+  async fetchProductsByCategory(category) {
+    this.isLoading = true;
+    try {
+      const productService = new ProductService();
+      this.products = await productService.getProductByCategory(category);
+    } catch (error) {
+      console.error('Error fetching products:', error);
+    } finally {
+      this.isLoading = false;
+    }
+  }
 }
 
 export default ProductViewModel;

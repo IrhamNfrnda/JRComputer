@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity,ScrollView, ImageBackground } from 'react-native';
+import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity, ScrollView, ImageBackground } from 'react-native';
 import SearchComponent from '../component/SearchComponent';
 import { Avatar } from 'react-native-paper';
 import ProductCard from '../component/ProductCard';
@@ -29,6 +29,11 @@ const MainMenu = ({ navigation }) => {
 
     fetchData();
   }, []);
+
+  const handleCategoryPress = (category) => {
+    // Navigate to the ProductScreen and pass the selected category as a parameter
+    navigation.navigate('Category', { category });
+  };
 
   return (
     <ScrollView style={styles.container}>
@@ -63,12 +68,14 @@ const MainMenu = ({ navigation }) => {
             horizontal
             showsHorizontalScrollIndicator={false}
             renderItem={({ item }) => (
-              <Avatar.Text
-                size={70}
-                label={item.name}
-                style={styles.categoryAvatar}
-                labelStyle={styles.categoryLabel}
-              />
+              <TouchableOpacity onPress={() => handleCategoryPress(item)}>
+                <Avatar.Text
+                  size={70}
+                  label={item.name}
+                  style={styles.categoryAvatar}
+                  labelStyle={styles.categoryLabel}
+                />
+              </TouchableOpacity>
             )}
           />
         </View>

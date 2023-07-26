@@ -20,10 +20,6 @@ const ServiceScreen = ({ navigation }) => {
       // attachment,
     });
     
-    setDeviceType('');
-    setBrand('');
-    setModel('');
-    setIssueDescription('');
   };
 
   const handleFilePicker = async () => {
