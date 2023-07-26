@@ -7,15 +7,38 @@ const ProductCard = observer(({ item, navigation }) => {
     navigation.navigate('ProductDetail', { product: item });
   };
 
+  const convertToIDRFormat = (numberString) => {
+    // Remove any non-numeric characters from the input string
+    const numericString = numberString.replace(/[^\d]/g, '');
+  
+    // Convert the numeric string to a number
+    const number = parseFloat(numericString);
+  
+    // Check if the number is valid
+    if (isNaN(number)) {
+      return 'Invalid Number';
+    }
+  
+    // Format the number as IDR
+    const formattedIDR = new Intl.NumberFormat('id-ID', {
+      style: 'currency',
+      currency: 'IDR',
+      minimumFractionDigits: 0,
+    }).format(number);
+  
+    return formattedIDR;
+  };
+  
+
   return (
     <TouchableOpacity style={styles.productCard} onPress={handleProductPress}>
       <View style={styles.imageContainer}>
-        <Image source={ item.image } style={styles.productImage} />
+        <Image source={{  uri: `${item.image}` }} style={styles.productImage} />
       </View>
       <View style={styles.detailsContainer}>
         <Text style={styles.productName}>{item.name}</Text>
         <Text style={styles.productCategory}>{item.category}</Text>
-        <Text style={styles.productPrice}>Rp{item.price}</Text>
+        <Text style={styles.productPrice}>{convertToIDRFormat(item.price)}</Text>
       </View>
     </TouchableOpacity>
   );

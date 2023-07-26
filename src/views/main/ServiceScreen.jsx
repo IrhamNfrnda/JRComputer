@@ -3,20 +3,27 @@ import { View, StyleSheet } from 'react-native';
 import { TextInput, Button, Text } from 'react-native-paper';
 import DocumentPicker from 'react-native-document-picker';
 
-const ServiceScreen = ({navigation}) => {
+const ServiceScreen = ({ navigation }) => {
   const [deviceType, setDeviceType] = useState('');
   const [brand, setBrand] = useState('');
   const [model, setModel] = useState('');
   const [issueDescription, setIssueDescription] = useState('');
-  const [attachment, setAttachment] = useState(null);
+  // const [attachment, setAttachment] = useState(null);
 
   const handleFormSubmit = () => {
-    navigation.navigate('OrderService');
-    console.log('Device Type:', deviceType);
-    console.log('Brand:', brand);
-    console.log('Model:', model);
-    console.log('Issue Description:', issueDescription);
-    console.log('Attachment:', attachment);
+    // Pass the form data as route parameters to the OrderService screen
+    navigation.navigate('OrderService', {
+      deviceType,
+      brand,
+      model,
+      issueDescription,
+      // attachment,
+    });
+    
+    setDeviceType('');
+    setBrand('');
+    setModel('');
+    setIssueDescription('');
   };
 
   const handleFilePicker = async () => {
@@ -30,7 +37,7 @@ const ServiceScreen = ({navigation}) => {
       console.log('Error picking file:', error);
     }
   };
-
+  
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -63,9 +70,9 @@ const ServiceScreen = ({navigation}) => {
         multiline
         numberOfLines={4}
       />
-      <Button onPress={handleFilePicker} style={styles.filePickerButton}>
+      {/* <Button onPress={handleFilePicker} style={styles.filePickerButton}>
         {attachment ? 'Foto Terupload' : 'Upload Foto'}
-      </Button>
+      </Button> */}
       <Button mode="contained" onPress={handleFormSubmit} style={styles.button}>
         Submit
       </Button>

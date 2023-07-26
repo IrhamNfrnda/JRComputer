@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "1062968462914",
+    "project_id": "jrcomputer-1639f",
+    "storage_bucket": "jrcomputer-1639f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1062968462914:android:edc5139002de6771d067db",
+        "android_client_info": {
+          "package_name": "com.jrcomputerpku"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1062968462914-l0bmjlb64alcgrf3c6u3059hvcnipjpf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.jrcomputerpku",
+            "certificate_hash": "49c12b80e82ac8b241cc5a1d07310def04fa7f22"
+          }
+        },
+        {
+          "client_id": "1062968462914-tj8d19a0q7uj7fc9u1mbmiencdo70qbk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyArXkT6HouWyCKlyNSQvqpR_BjcYJgEJFM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1062968462914-tj8d19a0q7uj7fc9u1mbmiencdo70qbk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

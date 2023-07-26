@@ -12,38 +12,23 @@ const featuredProducts2 = [
   { id: '3', name: 'Product 3', image: require('../../assets/mouse.webp') },
 ];
 
-const categories2 = [
-  { id: '1', name: 'Notebook', image: require('../../assets/laptop.jpeg') },
-  { id: '2', name: 'PC', image: require('../../assets/laptop.jpeg') },
-  { id: '3', name: 'Motherboard', image: require('../../assets/laptop.jpeg') },
-  { id: '4', name: 'Keyboard', image: require('../../assets/laptop.jpeg') },
-  { id: '5', name: 'Mouse', image: require('../../assets/laptop.jpeg') },
-];
-
-const products2 = [
-  { id: '1', name: 'RAM', category: 'Category 1', price: '210.000', image: require('../../assets/ram.webp') },
-  { id: '3', name: 'Mouse', category: 'Category 1', price: '120.000', image: require('../../assets/mouse.webp') },
-  { id: '4', name: 'Monitor', category: 'Category 3', price: '1.300.000', image: require('../../assets/monitor.jpg') },
-  { id: '5', name: 'Mouse Gaming', category: 'Category 2', price: '120.000', image: require('../../assets/mouse.webp') },
-];
-
 const MainMenu = ({ navigation }) => {
   const [products, setProducts] = React.useState([]);
   const [categories, setCategories] = React.useState([]);
   const productViewModel = new ProductViewModel();
   const categoryViewModel = new CategoryViewModel();
 
-  // React.useEffect(() => {
-  //   const fetchData = async () => {
-  //     await productViewModel.fetchProducts();
-  //     setProducts(productViewModel.products);
+  React.useEffect(() => {
+    const fetchData = async () => {
+      await productViewModel.fetchProducts();
+      setProducts(productViewModel.products);
 
-  //     await categoryViewModel.fetchCategory();
-  //     setCategories(categoryViewModel.category)
-  //   };
+      await categoryViewModel.fetchCategory();
+      setCategories(categoryViewModel.category)
+    };
 
-  //   fetchData();
-  // }, []);
+    fetchData();
+  }, []);
 
   return (
     <ScrollView style={styles.container}>
@@ -63,9 +48,6 @@ const MainMenu = ({ navigation }) => {
                 style={styles.featuredProductImageBackground}
                 imageStyle={styles.featuredProductImage}
               >
-                <View style={styles.featuredProductOverlay}>
-                  <Text style={styles.featuredProductName} numberOfLines={1}>{item.name}</Text>
-                </View>
               </ImageBackground>
             )}
           />
@@ -76,7 +58,7 @@ const MainMenu = ({ navigation }) => {
         <View style={styles.categoriesContainer}>
           <Text style={styles.categoriesLabel}>Kategori</Text>
           <FlatList
-            data={categories2}
+            data={categories}
             keyExtractor={(item) => item.id}
             horizontal
             showsHorizontalScrollIndicator={false}
@@ -96,7 +78,7 @@ const MainMenu = ({ navigation }) => {
         <View style={styles.productCatalogContainer}>
           <Text style={styles.productCatalogLabel}>Produk</Text>
           <FlatList
-            data={products2}
+            data={products}
             keyExtractor={(item) => item.id.toString()}
             renderItem={({ item }) => (
               <ProductCard item={item} navigation={navigation} />

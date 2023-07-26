@@ -1,5 +1,9 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, StyleSheet } from 'react-native';
+// import firebase from 'react-native-firebase';
+import SweetAlert from 'react-native-sweet-alert';
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const RegisterScreen = ({ navigation }) => {
     const [fullName, setFullName] = useState('');
@@ -8,8 +12,41 @@ const RegisterScreen = ({ navigation }) => {
     const [password, setPassword] = useState('');
     const [address, setAddress] = useState('');
 
-    const handleRegister = () => {
-        // Handle register logic here
+    const handleRegister = async () => {
+        try {
+
+            // Registration successful, now create the customer in Strapi
+            const customerData = {
+                data: {
+                    fullName,
+                    email,
+                    phoneNumber,
+                    address,
+                }
+            };
+
+            // Replace 'YOUR_STRAPI_API_URL' with the actual URL of your Strapi API
+            const response = await axios.post('https://strapi-production-3591.up.railway.app/api/customers', customerData);
+
+            console.log('Customer created:', response.data);
+
+            // // Show success alert after successful registration
+            // SweetAlert.showSweetAlert('Success', 'Registration successful', 'success', {
+            //     confirmButtonText: 'OK',
+            //     confirmButtonColor: '#008000',
+            // });
+
+            // Navigate back to the login screen after successful registration
+            navigation.navigate('Login');
+        } catch (error) {
+            // Show error alert if registration or customer creation fails
+            // SweetAlert.showSweetAlert('Error', 'Failed to register. Please try again.', 'error', {
+            //     confirmButtonText: 'OK',
+            //     confirmButtonColor: '#FF0000',
+            // });
+            console.error('Error registering user:', error);
+            console.log('Error response:', error.response.data);
+        }
     };
 
     const handleLogin = () => {

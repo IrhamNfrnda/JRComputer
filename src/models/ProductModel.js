@@ -11,15 +11,15 @@ class ProductModel {
     this.createdAt = data.attributes.createdAt;
     this.updatedAt = data.attributes.updatedAt;
     this.publishedAt = data.attributes.publishedAt;
-    this.category = data.attributes.category.data.attributes.title;
-    this.image = data.attributes.photo.data.attributes.url; 
+    this.category = data.attributes.category?.data?.attributes?.title || null;
+    this.image = data.attributes.photo?.data?.attributes?.url || null;
   }
 }
 
 class ProductService {
   async getProducts() {
     try {
-      const response = await axios.get('http://10.0.2.2:1337/api/products?populate=*'); 
+      const response = await axios.get('https://strapi-production-3591.up.railway.app/api/products?populate=*');
       const products = response.data.data.map((item) => new ProductModel(item));
       return products;
     } catch (error) {
@@ -30,7 +30,7 @@ class ProductService {
 
   async getProduct(id) {
     try {
-      const response = await axios.get(`'http://10.0.2.2:1337/api/products/${id}`);
+      const response = await axios.get(`https://strapi-production-3591.up.railway.app/api/products/${id}`);
       const product = new ProductModel(response.data.data);
       return product;
     } catch (error) {

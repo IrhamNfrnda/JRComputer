@@ -1,49 +1,78 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, Text, ScrollView, Button } from 'react-native';
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const OrderServiceScreen = ({ navigation }) => {
-  const serviceDetails = {
-    deviceType: 'Laptop',
-    brand: 'HP',
-    model: 'Pavilion',
-    issueDescription: 'Layar kedip kedip',
-    attachment: 'laptop_photo.jpg',
-  };
-
-  const priceDetails = {
-    serviceCharge: 'Rp 200,000',
-    partCost: 'Rp 300,000',
-    tax: 'Rp 100,000',
-    totalCost: 'Rp 600,000',
-  };
+const OrderServiceScreen = ({ navigation, route }) => {
+  const { deviceType, brand, model, issueDescription, attachment } = route.params;
+  const [userProfile, setUserProfile] = useState({});
 
   const handleDone = () => {
-    // Handle the "Done" button press
-    navigation.navigate('Home');
+    postDataToServiceCollection()
+      .then(() => navigation.navigate('Home'))
+      .catch((error) => console.error('Error placing order:', error));
   };
+
+  useEffect(() => {
+        const getUserData = async () => {
+          try {
+            const userDataString = await AsyncStorage.getItem('userData');
+            if (userDataString) {
+              const userData = JSON.parse(userDataString);
+              setUserProfile(userData);
+            }
+          } catch (error) {
+            console.error('Error fetching user data:', error);
+          }
+        };
+        getUserData();
+      }, []);
+
+  const postDataToServiceCollection = async () => {
+    try {
+      const response = await axios.post('https://strapi-production-3591.up.railway.app/api/services', {
+        data: {
+          deviceType,
+          brand,
+          model,
+          issueDescription,
+          customerName: userProfile?.fullName,
+          customerEmail: userProfile?.email,
+          customerPhone: userProfile?.phoneNumber,
+          shippingAddress: userProfile?.address,
+          shippingType: 'Ambil di toko',
+          orderDate: new Date().toISOString(),
+        }
+      });
+
+      // Show success alert after successful login
+      SweetAlert.showAlertWithOptions({
+        title: 'Success',
+        subTitle: 'Service berhasil diorder!',
+        style: 'success',
+        cancellable: true,
+      });
+
+      console.log('Order placed successfully:', response.data);
+    } catch (error) {
+      console.error('Error placing order:', error.response.data);
+      throw error;
+    }
+  };
+
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.title}>Service Confirmation</Text>
-
+      <Text style={styles.title}>Konfirmasi Service</Text>
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Service Details</Text>
-        <Text>Device Type: {serviceDetails.deviceType}</Text>
-        <Text>Brand: {serviceDetails.brand}</Text>
-        <Text>Model: {serviceDetails.model}</Text>
-        <Text>Issue Description: {serviceDetails.issueDescription}</Text>
-        <Text>Attachment: {serviceDetails.attachment}</Text>
+        <Text style={styles.sectionTitle}>Detail Pesanan Service</Text>
+        <Text>Device Type: {deviceType}</Text>
+        <Text>Brand: {brand}</Text>
+        <Text>Model: {model}</Text>
+        <Text>Issue Description: {issueDescription}</Text>
+        {/* <Text>Attachment: {attachment}</Text> */}
       </View>
-
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Price Details</Text>
-        <Text>Service Charge: {priceDetails.serviceCharge}</Text>
-        <Text>Part Cost: {priceDetails.partCost}</Text>
-        <Text>Tax: {priceDetails.tax}</Text>
-        <Text>Total Cost: {priceDetails.totalCost}</Text>
-      </View>
-
-      <Button title="Done" onPress={handleDone} />
+      <Button title="Order" onPress={handleDone} />
     </ScrollView>
   );
 };
